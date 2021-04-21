@@ -15,7 +15,7 @@ def scrape():
     driver.get(nasa_url)
     time.sleep(3)
     nasa_html = driver.page_source
-    nasa_soup = bs(nasa_html)
+    nasa_soup = bs(nasa_html, features="html.parser")
     nasa_results = nasa_soup.find(class_="slide")
     news_titles = nasa_results.find("h3").text
     news_p = nasa_results.find(class_="article_teaser_body").text
@@ -30,6 +30,7 @@ def scrape():
     feat_soup = bs(feat_html)
     feat_results = feat_soup.find("img", class_="headerimage fade-in")['src']
     featured_image_url = "https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/" + feat_results
+    mars_dict["featured_image_url"] = featured_image_url
 
     # Mars Facts
     fact_url = "https://space-facts.com/mars/"
