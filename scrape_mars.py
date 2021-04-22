@@ -62,10 +62,11 @@ def scrape():
 
     mars_dict["hemisphere_image_urls"] = hemisphere_image_urls
 
-    return mars_dict
-
-    time.sleep(5)
+    time.sleep(2)
     driver.close()
+
+    return mars_dict
+    
 
 if __name__ == "__main__":
     print(scrape())
