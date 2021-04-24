@@ -19,6 +19,7 @@ def scrape():
     nasa_results = nasa_soup.find(class_="slide")
     news_titles = nasa_results.find("h3").text
     news_p = nasa_results.find(class_="article_teaser_body").text
+    
     mars_dict["news_titles"] = news_titles
     mars_dict["news_p"] = news_p
 
@@ -30,6 +31,7 @@ def scrape():
     feat_soup = bs(feat_html)
     feat_results = feat_soup.find("img", class_="headerimage fade-in")['src']
     featured_image_url = "https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/" + feat_results
+    
     mars_dict["featured_image_url"] = featured_image_url
 
     # Mars Facts
@@ -38,19 +40,21 @@ def scrape():
     table_fact = table[0]
     table_fact.columns = ["Description","Mars"]
     mars_fact = table_fact.to_html(index=False)
+    
     mars_dict["mars_fact"] = mars_fact
 
     # Mars Hemispheres
     hemisphere_image_urls = []
-    hem_url = [
-        "https://astrogeology.usgs.gov/search/map/Mars/Viking/cerberus_enhanced",
-        "https://astrogeology.usgs.gov/search/map/Mars/Viking/schiaparelli_enhanced",
-        "https://astrogeology.usgs.gov/search/map/Mars/Viking/syrtis_major_enhanced",
-        "https://astrogeology.usgs.gov/search/map/Mars/Viking/valles_marineris_enhanced"
-    ]
-
-    for u in hem_url:
-        driver.get(u)
+    hem_home_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    driver.get(hem_home_url)
+    time.sleep(3)
+    hem_main_html = driver.page_source
+    hem_main_soup = bs(hem_main_html)
+    hem_all_url = hem_main_soup.find_all("div", class_="description")
+    for a in hem_all_url:    
+        hem_url = a.find('a')['href']
+        hem_url = "https://astrogeology.usgs.gov/" + hem_url
+        driver.get(hem_url)
         time.sleep(3)
         hem_html = driver.page_source
         hem_soup = bs(hem_html)
@@ -61,6 +65,8 @@ def scrape():
         hemisphere_image_urls.append(hem_info)
 
     mars_dict["hemisphere_image_urls"] = hemisphere_image_urls
+
+
 
     time.sleep(2)
     driver.close()
