@@ -76,6 +76,12 @@ Use MongoDB with Flask templating to create a new HTML page that displays all of
 
 * Create a template HTML file called `index.html` that will take the mars data dictionary and display all of the data in the appropriate HTML elements.
 
+## Results
+
+![Part 1](mission_to_mars_screenshot_1.png)
+
+![Part 2](mission_to_mars_screenshot_2.png)
+
 - - -
 
 ## Hints
